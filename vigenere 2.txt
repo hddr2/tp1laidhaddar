@@ -1,0 +1,56 @@
+def longueurCle(texte) :
+distances = []
+n = len(texte)
+for lgSC in range(4, 10) :
+for i in range(0, n - lgSC) :
+sc = texte[i : i + lgSC]
+j = texte[i+1 :].find(sc) + 1
+if j > 0 : distances.append(j)
+# Maintenant que l'on a le tableau des distances, on va boucler sur la longueur de la clé
+# On va s'intéresser a la longueur qui donne le meilleur score
+# mais cela n'est pas sur surtout quand la longueur de la clé a des petits diviseurs
+nbMax = 0
+for lg in range(5,20) :
+nb = 0
+for d in distances :
+if d % lg == 0 : nb = nb + 1
+if nb >= nbMax :
+Le chiffre de Vigenère 5/6
+nbMax = nb
+lgCle = lg
+return lgCle
+# et chercher la lettre la plus fréquente
+occ = { }
+for i in range(0, len(texte)) :
+car = cesar(texte[i], decalages[i % lgCle])
+if car in occ:
+occ[car] = occ[car] + 1
+else:
+occ[car] = 1
+max = 0;
+for car in occ.keys():
+if occ[car] > max :
+max = occ[car];
+carE = car;
+delta = (26 + ord(carE) - ord('E') ) % 26
+# 3 - maintenant on connait la cle
+cle = ''
+for d in decalages :
+cle = cle + ALPHABET[(delta - d) % 26]
+return cle
+# Calcul de l'indice de coincidence
+def IC(texte) :
+occ = { }
+n = len(texte)
+for car in texte:
+if car in occ:
+occ[car] = occ[car] + 1
+else:
+occ[car] = 1
+ic = 0.0
+for car in occ.keys(): ic += occ[car]*(occ[car] - 1)/n/(n-1)
+return ic
+def decal(car, d) :
+return chr((ord(car) - ord('A') + d) % 26 + ord('A'))
+def convertCarCode(car) :
+return ord(car) - ord('A')
